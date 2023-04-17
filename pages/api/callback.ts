@@ -22,6 +22,9 @@ export default withIronSessionApiRoute(
         session.accessToken = response.access_token;
         session.refreshToken = response.refresh_token;
 
+        const currentTime = Math.floor(Date.now() / 1000);
+        session.expiresIn = response.expires_in + currentTime;
+
         await req.session.save();
 
 

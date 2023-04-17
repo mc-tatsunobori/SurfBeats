@@ -38,15 +38,15 @@ export const pausePlayback = async (accessToken: string) => {
     }
 };
 
-export const resumePlayback = async (accessToken: string) => {
-    try {
-        spotifyApi.setAccessToken(accessToken);
-        await spotifyApi.play();
-    } catch (error) {
-        console.error("Error resuming playback", error);
-        throw error;
-    }
-};
+// export const resumePlayback = async (accessToken: string) => {
+//     try {
+//         spotifyApi.setAccessToken(accessToken);
+//         await spotifyApi.play();
+//     } catch (error) {
+//         console.error("Error resuming playback", error);
+//         throw error;
+//     }
+// };
 
 export const playPlaylist = async (accessToken: string, playlistId: string) => {
     try {
@@ -85,3 +85,13 @@ export const refreshAccessToken = async (refreshToken: string) => {
         throw error;
     }
 };
+
+export function isTokenExpired(expiresIn: number): boolean {
+    try {
+        const currentTime = Math.floor(Date.now() / 1000);
+        return expiresIn < currentTime;
+    } catch (error) {
+        console.error("Error checking token expiration", error);
+        return true;
+    }
+}

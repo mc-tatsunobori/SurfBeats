@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { skipTrack, pausePlayback, resumePlayback, refreshAccessToken, playPlaylist } from "@/lib/spotify";
+import { skipTrack, pausePlayback, refreshAccessToken, playPlaylist } from "@/lib/spotify";
 
 interface AutoSkipProps {
     accessToken: string;
@@ -51,9 +51,13 @@ const AutoSkip: React.FC<AutoSkipProps> = ({ accessToken, refreshToken, playlist
     };
 
     return (
-        <div>
-            <button onClick={handlePauseAndStopSkipping}>Pause and Stop Skipping</button>
-            <button onClick={handleResumeAndStartSkipping}>Resume and Start Skipping</button>
+        <div className="space-x-4 mt-3 mb-3">
+            <button onClick={handlePauseAndStopSkipping} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Pause and Stop Skipping
+            </button>
+            <button onClick={handleResumeAndStartSkipping} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Resume and Start Skipping
+            </button>
         </div>
     );
 };

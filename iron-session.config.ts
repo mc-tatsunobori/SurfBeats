@@ -14,5 +14,7 @@ declare module "iron-session" {
     interface IronSessionData {
         accessToken: string,
         refreshToken: string,
+
+        expiresIn: number
     }
 }
