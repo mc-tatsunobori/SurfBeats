@@ -13,50 +13,51 @@ interface AutoSkipPageProps {
     authUrl: string;
 }
 
-const AutoSkipPage: React.FC<AutoSkipPageProps> = ({
-                                                       accessToken,
-                                                       refreshToken,
-                                                       authUrl,
-                                                   }) => {
-    const [selectedPlaylistId, setSelectedPlaylistId] = useState("");
-    const [isLoggedIn, setIsLoggedIn] = useState(!!accessToken);
+const AutoSkipPage: React.FC<AutoSkipPageProps> =
+    ({
+         accessToken,
+         refreshToken,
+         authUrl,
+     }) => {
+        const [selectedPlaylistId, setSelectedPlaylistId] = useState("");
+        const [isLoggedIn, setIsLoggedIn] = useState(!!accessToken);
 
-    useEffect(() => {
-        setIsLoggedIn(!!accessToken);
-    }, [accessToken]);
+        useEffect(() => {
+            setIsLoggedIn(!!accessToken);
+        }, [accessToken]);
 
-    const handleLogin = () => {
-        window.location.href = authUrl;
-    };
+        const handleLogin = () => {
+            window.location.href = authUrl;
+        };
 
-    return (
-        <div className="container mx-auto px-4">
-            <h1 className="text-4xl font-bold mb-4">SurfBeats</h1>
-            {isLoggedIn ? (
-                <>
-                    <PlaylistSelect
-                        accessToken={accessToken}
-                        onPlaylistSelected={setSelectedPlaylistId}
-                    />
-                    {selectedPlaylistId && (
-                        <AutoSkip
+        return (
+            <div className="container mx-auto px-4">
+                <h1 className="text-4xl font-bold mb-4">SurfBeats</h1>
+                {isLoggedIn ? (
+                    <>
+                        {selectedPlaylistId && (
+                            <AutoSkip
+                                accessToken={accessToken}
+                                refreshToken={refreshToken}
+                                playlistId={selectedPlaylistId}
+                            />
+                        )}
+                        <PlaylistSelect
                             accessToken={accessToken}
-                            refreshToken={refreshToken}
-                            playlistId={selectedPlaylistId}
+                            onPlaylistSelected={setSelectedPlaylistId}
                         />
-                    )}
-                </>
-            ) : (
-                <button
-                    onClick={handleLogin}
-                    className="bg-blue-500 text-white font-bold py-2 px-4 rounded"
-                >
-                    Sign in with Spotify
-                </button>
-            )}
-        </div>
-    );
-};
+                    </>
+                ) : (
+                    <button
+                        onClick={handleLogin}
+                        className="bg-blue-500 text-white font-bold py-2 px-4 rounded"
+                    >
+                        Sign in with Spotify
+                    </button>
+                )}
+            </div>
+        );
+    };
 
 
 const sessionOptions = {

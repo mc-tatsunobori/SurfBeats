@@ -28,7 +28,7 @@ export default withIronSessionApiRoute(
         await req.session.save();
 
 
-        res.redirect("/auto-skip");
+        res.redirect("/");
     },
     sessionOptions
 );
