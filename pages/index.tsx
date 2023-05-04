@@ -35,15 +35,9 @@ const AutoSkipPage: React.FC<AutoSkipPageProps> =
                 <h1 className="text-4xl font-bold mb-4">SurfBeats</h1>
                 {isLoggedIn ? (
                     <>
-                        {selectedPlaylistId && (
-                            <AutoSkip
-                                accessToken={accessToken}
-                                refreshToken={refreshToken}
-                                playlistId={selectedPlaylistId}
-                            />
-                        )}
                         <PlaylistSelect
                             accessToken={accessToken}
+                            refreshToken={refreshToken}
                             onPlaylistSelected={setSelectedPlaylistId}
                         />
                     </>

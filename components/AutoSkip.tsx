@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { skipTrack, pausePlayback, refreshAccessToken, playPlaylist } from "@/lib/spotify";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faCirclePlay, faCirclePause} from "@fortawesome/free-solid-svg-icons";
 
 interface AutoSkipProps {
     accessToken: string;
@@ -10,6 +12,7 @@ interface AutoSkipProps {
 const AutoSkip: React.FC<AutoSkipProps> = ({ accessToken, refreshToken, playlistId }) => {
     const [stopSkipping, setStopSkipping] = useState(false);
     const [token, setToken] = useState(accessToken);
+    const [isPlaying, setIsPlaying] = useState(false);
 
     useEffect(() => {
         if (!playlistId || stopSkipping) return;
@@ -36,6 +39,7 @@ const AutoSkip: React.FC<AutoSkipProps> = ({ accessToken, refreshToken, playlist
         try {
             await pausePlayback(token);
             setStopSkipping(true);
+            setIsPlaying(false); // 追加
         } catch (error) {
             console.error("Error pausing and stopping skipping", error);
         }
@@ -45,19 +49,29 @@ const AutoSkip: React.FC<AutoSkipProps> = ({ accessToken, refreshToken, playlist
         try {
             await playPlaylist(token, playlistId);
             setStopSkipping(false);
+            setIsPlaying(true); // 追加
         } catch (error) {
             console.error("Error resuming and starting skipping", error);
         }
     };
 
     return (
-        <div className="space-x-4 mt-3 mb-3">
-            <button onClick={handlePauseAndStopSkipping} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Pause and Stop Skipping
-            </button>
-            <button onClick={handleResumeAndStartSkipping} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Resume and Start Skipping
-            </button>
+        <div className="absolute bottom-0 right-0 mb-2 mr-2">
+            {isPlaying ? (
+                <FontAwesomeIcon
+                    onClick={handlePauseAndStopSkipping}
+                    className="text-blue-500 cursor-pointer"
+                    icon={faCirclePause}
+                    size="2xl"
+                />
+            ) : (
+                <FontAwesomeIcon
+                    onClick={handleResumeAndStartSkipping}
+                    className="text-blue-500 cursor-pointer"
+                    icon={faCirclePlay}
+                    size="2xl"
+                />
+            )}
         </div>
     );
 };
