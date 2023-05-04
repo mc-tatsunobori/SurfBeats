@@ -5,10 +5,8 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleChevronLeft, faCircleChevronRight} from "@fortawesome/free-solid-svg-icons";
 import AutoSkip from "./AutoSkip";
 import {HttpError} from "http-errors";
-import {register} from 'swiper/element/bundle';
 import {Swiper, SwiperSlide} from "swiper/react";
 import {Navigation, FreeMode, Thumbs, EffectCoverflow} from "swiper";
-import {SwiperContainer} from "swiper/element/swiper-element";
 
 interface PlaylistSelectProps {
     accessToken: string;
@@ -23,10 +21,7 @@ const PlaylistSelect: React.FC<PlaylistSelectProps> =
          onError,
      }) => {
         const [playlists, setPlaylists] = useState<PlaylistObjectSimplified[]>([]);
-        const [currentPage, setCurrentPage] = useState(0);
         const [currentPlayingPlaylistId, setCurrentPlayingPlaylistId] = useState<string | null>(null);
-// ...
-        const maxPage = Math.ceil(playlists.length / 3) - 1;
 
         useEffect(() => {
             const fetchPlaylists = async () => {
@@ -44,14 +39,6 @@ const PlaylistSelect: React.FC<PlaylistSelectProps> =
                 fetchPlaylists();
             }
         }, [accessToken]);
-
-        const prevPage = () => {
-            setCurrentPage((prev) => (prev > 0 ? prev - 1 : prev));
-        };
-
-        const nextPage = () => {
-            setCurrentPage((prev) => (prev < maxPage ? prev + 1 : prev));
-        };
 
         return (
             <div className={"mx-auto w-5/6"}>

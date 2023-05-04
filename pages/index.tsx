@@ -5,15 +5,14 @@ import {withIronSessionSsr} from "iron-session/next";
 import process from "process";
 import {isTokenExpired, refreshAccessToken} from "@/lib/spotify";
 import {HttpError} from "http-errors";
-import {error} from "next/dist/build/output/log";
 
-interface AutoSkipPageProps {
+interface IndexProps {
     accessToken: string;
     refreshToken: string;
     authUrl: string;
 }
 
-const AutoSkipPage: React.FC<AutoSkipPageProps> =
+const Index: React.FC<IndexProps> =
     ({
          accessToken,
          refreshToken,
@@ -125,4 +124,4 @@ export const getServerSideProps: GetServerSideProps = withIronSessionSsr(async (
     };
 }, sessionOptions);
 
-export default AutoSkipPage;
+export default Index;
