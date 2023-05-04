@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from "react";
 import PlaylistSelect from "../components/PlaylistSelect";
-import AutoSkip from "../components/AutoSkip";
 import type {GetServerSideProps} from "next";
 import {withIronSessionSsr} from "iron-session/next";
 import process from "process";
 import {isTokenExpired, refreshAccessToken} from "@/lib/spotify";
+import {HttpError} from "http-errors";
+import {error} from "next/dist/build/output/log";
 
 interface AutoSkipPageProps {
     accessToken: string;
     refreshToken: string;
-
     authUrl: string;
 }
 
@@ -19,8 +19,23 @@ const AutoSkipPage: React.FC<AutoSkipPageProps> =
          refreshToken,
          authUrl,
      }) => {
-        const [selectedPlaylistId, setSelectedPlaylistId] = useState("");
         const [isLoggedIn, setIsLoggedIn] = useState(!!accessToken);
+
+        const [errorMessage, setErrorMessage] = useState("");
+
+        const handleError = (err: HttpError | null) => {
+            if(err === null){
+                return setErrorMessage("");
+            }
+            const error = err.body.error;
+            if (error.status === 404){
+                return  setErrorMessage("デバイスが有効ではありません。spotifyアプリを起動してください。");
+            }
+
+            return  setErrorMessage("プレイリストの再生中に問題が発生しました。");
+
+        };
+
 
         useEffect(() => {
             setIsLoggedIn(!!accessToken);
@@ -32,22 +47,36 @@ const AutoSkipPage: React.FC<AutoSkipPageProps> =
 
         return (
             <div className="container mx-auto px-4">
-                <h1 className="text-4xl font-bold mb-4">SurfBeats</h1>
+                <p className={"text-5xl font-bold m-4 text-center font-inter text-sb-dark-blue"}>SurfBeats</p>
+                <p className={"text-center text-2xl font-bold mb-4 text-sb-dark-blue"}>あなたの好きな音楽を”乗りこなし”ましょう。</p>
+                <p className={"text-center text-lg text-sb-dark-blue"}>自分のプレイリストを選択して再生ボタンを押すと、2分を目処に自動でスキップして再生し続けます。</p>
+                <p className={"text-center mb-4 text-lg text-sb-dark-blue"}>作業中のあなたを波に乗らせること間違いなし。</p>
+                {errorMessage && (
+                    <div className="text-red-500 font-bold">
+                        {errorMessage}
+                    </div>
+                )}
                 {isLoggedIn ? (
                     <>
-                        <PlaylistSelect
-                            accessToken={accessToken}
-                            refreshToken={refreshToken}
-                            onPlaylistSelected={setSelectedPlaylistId}
-                        />
+                        <div className={"flex items-center h-96 max-w-screen-xl mx-auto"}>
+                            <PlaylistSelect
+                                accessToken={accessToken}
+                                refreshToken={refreshToken}
+                                onError={handleError}
+                            />
+                        </div>
                     </>
                 ) : (
-                    <button
-                        onClick={handleLogin}
-                        className="bg-blue-500 text-white font-bold py-2 px-4 rounded"
-                    >
-                        Sign in with Spotify
-                    </button>
+                    <>
+                    <div className="flex justify-center items-center">
+                        <button
+                            onClick={handleLogin}
+                            className="bg-sb-dark-blue text-sb-white py-2 px-4 rounded-xl"
+                        >
+                            Sign in with Spotify
+                        </button>
+                    </div>
+                    </>
                 )}
             </div>
         );
@@ -91,7 +120,7 @@ export const getServerSideProps: GetServerSideProps = withIronSessionSsr(async (
         props: {
             accessToken: accessToken || null,
             refreshToken: refreshToken || null,
-            authUrl
+            authUrl,
         },
     };
 }, sessionOptions);

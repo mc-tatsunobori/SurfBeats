@@ -38,16 +38,6 @@ export const pausePlayback = async (accessToken: string) => {
     }
 };
 
-// export const resumePlayback = async (accessToken: string) => {
-//     try {
-//         spotifyApi.setAccessToken(accessToken);
-//         await spotifyApi.play();
-//     } catch (error) {
-//         console.error("Error resuming playback", error);
-//         throw error;
-//     }
-// };
-
 export const playPlaylist = async (accessToken: string, playlistId: string) => {
     try {
         spotifyApi.setAccessToken(accessToken);
