@@ -5,6 +5,7 @@ import {withIronSessionSsr} from "iron-session/next";
 import process from "process";
 import {isTokenExpired, refreshAccessToken} from "@/lib/spotify";
 import {HttpError} from "http-errors";
+import { sessionOptions } from "@/iron-session.config"
 
 interface IndexProps {
     accessToken: string;
@@ -80,15 +81,6 @@ const Index: React.FC<IndexProps> =
             </div>
         );
     };
-
-
-const sessionOptions = {
-    password: process.env.SECRET_COOKIE_PASSWORD as string,
-    cookieName: process.env.SECRET_COOKIE_NAME as string,
-    cookieOptions: {
-        secure: process.env.NODE_ENV === "production",
-    },
-};
 
 
 export const getServerSideProps: GetServerSideProps = withIronSessionSsr(async ({req, res}) => {

@@ -1,4 +1,3 @@
-import {withIronSessionSsr} from "iron-session/next";
 import {IronSessionOptions} from "iron-session";
 import process from "process";
 
