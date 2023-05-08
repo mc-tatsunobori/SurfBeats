@@ -45,7 +45,7 @@ const PlaylistSelect: React.FC<PlaylistSelectProps> =
                 <Swiper
                     modules={[Navigation, FreeMode, Thumbs, EffectCoverflow]}
                     spaceBetween={30}
-                    slidesPerView={3}
+                    slidesPerView={1}
                     loop={true}
                     freeMode={true}
                     effect={"coverflow"}
@@ -61,6 +61,11 @@ const PlaylistSelect: React.FC<PlaylistSelectProps> =
                         prevEl: ".custom-swiper-button-prev",
                     }}
                     className="relative"
+                    breakpoints={{
+                        640: {
+                            slidesPerView: 3,
+                        }
+                    }}
                 >
                     {playlists.map((playlist) => (
                         <SwiperSlide key={playlist.id}>
