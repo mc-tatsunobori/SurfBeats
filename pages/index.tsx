@@ -5,7 +5,7 @@ import {withIronSessionSsr} from "iron-session/next";
 import process from "process";
 import {isTokenExpired, refreshAccessToken} from "@/lib/spotify";
 import {HttpError} from "http-errors";
-import { sessionOptions } from "@/iron-session.config"
+import {sessionOptions} from "@/iron-session.config"
 
 interface IndexProps {
     accessToken: string;
@@ -24,15 +24,15 @@ const Index: React.FC<IndexProps> =
         const [errorMessage, setErrorMessage] = useState("");
 
         const handleError = (err: HttpError | null) => {
-            if(err === null){
+            if (err === null) {
                 return setErrorMessage("");
             }
             const error = err.body.error;
-            if (error.status === 404){
-                return  setErrorMessage("デバイスが有効ではありません。spotifyアプリを起動してください。");
+            if (error.status === 404) {
+                return setErrorMessage("デバイスが有効ではありません。spotifyアプリを起動してください。");
             }
 
-            return  setErrorMessage("プレイリストの再生中に問題が発生しました。");
+            return setErrorMessage("プレイリストの再生中に問題が発生しました。");
 
         };
 
@@ -47,10 +47,12 @@ const Index: React.FC<IndexProps> =
 
         return (
             <div className="container mx-auto px-4">
-                <p className={"text-5xl font-bold m-4 text-center font-inter text-sb-dark-blue"}>SurfBeats</p>
-                <p className={"text-center text-2xl font-bold mb-4 text-sb-dark-blue"}>あなたの好きな音楽を”乗りこなし”ましょう。</p>
-                <p className={"text-center text-lg text-sb-dark-blue"}>自分のプレイリストを選択して再生ボタンを押すと、2分を目処に自動でスキップして再生し続けます。</p>
-                <p className={"text-center mb-4 text-lg text-sb-dark-blue"}>作業中のあなたを波に乗らせること間違いなし。</p>
+                <p className={"text-3xl md:text-5xl font-bold m-4 text-center font-inter text-sb-dark-blue"}>SurfBeats</p>
+                <p className={"text-center text-xl md:text-2xl font-bold mb-4 text-sb-dark-blue"}>あなたの好きな音楽を
+                    ”乗りこなし”ましょう。</p>
+                <p className={"text-center text-xs md:text-lg text-sb-dark-blue"}>自分のプレイリストを選択して再生ボタンを押すと、</p>
+                <p className={"text-center text-xs md:text-lg text-sb-dark-blue"}>2分を目処に自動でスキップして再生し続けます。</p>
+                <p className={"text-center mb-4 text-xs md:text-lg text-sb-dark-blue"}>作業中のあなたを波に乗らせること間違いなし。</p>
                 {errorMessage && (
                     <div className="text-red-500 font-bold">
                         {errorMessage}
@@ -58,7 +60,7 @@ const Index: React.FC<IndexProps> =
                 )}
                 {isLoggedIn ? (
                     <>
-                        <div className={"flex items-center h-96 max-w-screen-xl mx-auto"}>
+                        <div className={"flex items-center h-64 md:h-96 max-w-screen-xl mx-auto"}>
                             <PlaylistSelect
                                 accessToken={accessToken}
                                 refreshToken={refreshToken}
@@ -68,14 +70,14 @@ const Index: React.FC<IndexProps> =
                     </>
                 ) : (
                     <>
-                    <div className="flex justify-center items-center">
-                        <button
-                            onClick={handleLogin}
-                            className="bg-sb-dark-blue text-sb-white py-2 px-4 rounded-xl"
-                        >
-                            Sign in with Spotify
-                        </button>
-                    </div>
+                        <div className="flex justify-center items-center">
+                            <button
+                                onClick={handleLogin}
+                                className="bg-sb-dark-blue text-sb-white py-2 px-4 rounded-xl"
+                            >
+                                Sign in with Spotify
+                            </button>
+                        </div>
                     </>
                 )}
             </div>
