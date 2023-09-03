@@ -85,3 +85,37 @@ export function isTokenExpired(expiresIn: number): boolean {
         return true;
     }
 }
+
+export const getCurrentPlayback = async (accessToken: string) => {
+    try {
+        spotifyApi.setAccessToken(accessToken);
+        const data = await spotifyApi.getMyCurrentPlaybackState();
+
+
+        if(data.statusCode !== 200){
+            return null;
+        }
+
+        const item = data.body.item as SpotifyApi.TrackObjectFull;
+        return {
+            title: item.name,
+            artist: item.artists[0].name,
+            cover: item.album.images[0].url,
+        };
+    } catch (error) {
+        console.error("Error getting current playback", error);
+        throw error;
+    }
+};
+
+export const getAvailableDevices = async (accessToken: string) => {
+    try {
+        spotifyApi.setAccessToken(accessToken);
+        const data = await spotifyApi.getMyDevices();
+        return data.body.devices;
+    } catch (error) {
+        console.error('Error getting available devices', error);
+        throw error;
+    }
+};
+
